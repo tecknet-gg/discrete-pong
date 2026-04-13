@@ -27,9 +27,10 @@ We use another clock, the Physics CLK for the paddle movement. When either the u
 
 ## Paddle Y Counters
 
-Uses 3x4bit = 12bit cascading U/D counters to track the Y position. Direction is determined by the previous stage. CLK is the passthrough output of the previous stage too. Currently no logic to prevent the paddle from going of screen. It does return (eventually) in such a case.
+Uses 3x4bit = 12bit cascading U/D counters to track the Y position. Direction is determined by the previous stage. CLK is the passthrough output of the previous stage too. Currently no logic to prevent the paddle from going of screen. It does return (eventually) in such a case. The 7408 in the middle produces the clock signal to move it up or down depending on inputs.
 
-<img width="1077" height="720" alt="image" src="https://github.com/user-attachments/assets/82fe24e0-56e7-4af0-a266-a6520c159246" />
+<img width="830" height="700" alt="image" src="https://github.com/user-attachments/assets/c8c7ee1a-d8ea-45a6-b20a-8a5395366bd8" />
+
 
 ## Paddle Rendering
 
