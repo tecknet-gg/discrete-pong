@@ -1,7 +1,7 @@
 ---
 title: "Discrete Logic Pong"
-author: "bob builder"
-description: "A discrete-logic Pong implementation using 74xx-style ICs, VGA timing, paddle logic, and ball movement simulation."
+author: "jeevan hatti"
+description: "A discrete-logic Pong implementation using 74xx-style ICs!"
 created_at: "2026-03-12"
 ---
 
@@ -1008,3 +1008,24 @@ The next bit is uncoupling the counters from the clock directly, and tying in a 
 My plan is to use registers. One reg will be the velocity, and that will tell how much to increment an accumulator by, and when that acumulator overflows, we'll have a tick to increment the coordinate. That gives us more granular control. I'll see if I decide to implement that later tonight, or if thats a tommorow or later this week thing :]
 
 **Total time spent: 0.75 hours**
+
+# May 18, 5 PM: Adding Accumulators to slow things down
+
+Adding accumulators! Basically using a direct clock means we have literally no control of the speed, or for that matter the direction really, since the ratio of x:y movement would always be 1:1 (or some fixed ratio if we used multiple clocks). Obviously having the ball move in just one direction is just slightly boring... To remedy this pressing issue, we're using accumulators. 
+
+The accumulators are just some 4 bit registers. One 4 bit register is just storing the x/y speed. The other 4 bit register acts as our accumulator. We dont' really care whats actually store in this reg, but more when it flowss over. We take the x/ySpeed, and and x/yAccumulator and add them with a 4 bit adder. The carry over of the adder acts as the clock, and the resultant sum or remainder is handed back to the accumulator. What this does in practice is lets me have much greater authority over the speed, whilst maintaing a fixed clock. I keep my clock as it was (well I bumped it up to 500 over 60Hz because we made our ball about 16 times slower), and load a speed into the x/ySpeed regs. Very fun!
+
+Designing and implementing this sytem was the majority of today's session. Some other chores I did was adding a master render flag, so when a button is pressed, we enable render, using a latch, and also flash thel load pin on the x and y counters so we can reset the ball's position. The reason we need a master render (and master collsions), is beacuse since the clock is constantly ticking, the ball's coordinate is also constantly updating. Instead of figuring out a way to control the clock, I decided to add this flag to enable the rending + the collisions, so we don't really care what the ball's value is unless the render flag is high. Fun!
+
+Anyways enough yap. Here are some juicy pictures:
+
+The initial spaghetti implementation of the accumulators into the old counters and stuff. 
+<img width="911" height="401" alt="image" src="https://github.com/user-attachments/assets/ba2ca1ef-b245-44a3-aa1c-d6aee9260932" />
+
+Polished implementation of x and y accum + coordinates. very fun. just noticed that the labels are both x, will change that. also has the latches for directions and master render. lables are also goofed for those.
+
+<img width="422" height="359" alt="image" src="https://github.com/user-attachments/assets/3918bda3-c501-4e68-8238-1a806d0ce7ac" />
+
+
+**Total time spent: 1.00 hours**
+
